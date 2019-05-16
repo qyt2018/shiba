@@ -18,7 +18,7 @@ class ProjectView(view.View):
 
     async def post(self, request):
         service = self.service()
-        form = self.detail_form(data={"name": "sad"})
+        form = self.detail_form(data=request.data)
         if form.validate():
             result = await service.create_project(form.data)
             return self.success(result)

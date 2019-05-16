@@ -60,9 +60,9 @@ export default {
     baseURL: '/'
     // See https://github.com/nuxt-community/axios-module#options
   },
-  router: {
-    base: '/web/'
-  },
+  // router: {
+  //   base: '/web/'
+  // },
   generate: {
     dir: '../templates'
   },
