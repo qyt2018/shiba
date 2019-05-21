@@ -12,17 +12,21 @@
     layout: 'blank',
     data() {
       return {
-        totalTime: 3
+        totalTime: 3,
+        clock: null
       }
     },
     mounted() {
-      let clock = window.setInterval(() => {
+      this.clock = window.setInterval(() => {
         this.totalTime--;
         if (this.totalTime <= 0) {
-          window.clearInterval(clock);
+          window.clearInterval(this.clock);
           this.$router.push({path: "/"});
         }
       }, 1000)
+    },
+    destroyed() {
+      window.clearInterval(this.clock);
     }
   }
 </script>
