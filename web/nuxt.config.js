@@ -51,6 +51,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/proxy'
   ],
   /*
@@ -60,9 +61,10 @@ export default {
     baseURL: '/'
     // See https://github.com/nuxt-community/axios-module#options
   },
-  // router: {
-  //   base: '/web/'
-  // },
+  router: {
+    middleware: ['auth']
+    // base: '/web/'
+  },
   generate: {
     dir: '../templates'
   },

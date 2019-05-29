@@ -9,3 +9,6 @@ class View(views.HTTPMethodView):
 
     def fail(self, data):
         return json({"msg": "失败", "code": 500, "result": data})
+
+    def unauthentication(self, data):
+        return json({"msg": "认证失败", "code": 401, "result": data})

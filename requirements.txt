@@ -2,3 +2,6 @@ sanic
 marshmallow
 sanic-motor
 WTForms
+requests
+sanic-jwt
+cryptography
