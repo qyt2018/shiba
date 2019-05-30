@@ -8,7 +8,7 @@
               <v-card-text>
                 <div class="layout column align-center">
                   <img src="~/assets/images/devops_log.png" class="logo_img">
-                  <h1 class="flex my-4 primary--text">ShiBa-持续交付</h1>
+                  <h1 class="flex my-4 primary--text">SHIBA</h1>
                 </div>
                 <v-form ref="login_form" @keyup.native.enter="login" lazy-validation>
                   <v-text-field
