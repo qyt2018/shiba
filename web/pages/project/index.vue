@@ -52,7 +52,7 @@
               </v-layout>
             </v-flex>
             <v-flex align-self-center class="pt-2">
-              <v-pagination value="1" :length="6"></v-pagination>
+              <v-pagination :value="1" :length="6"></v-pagination>
             </v-flex>
           </v-layout>
         </v-container>
