@@ -1,0 +1,2 @@
+class ModelUniqueException(BaseException):
+    pass

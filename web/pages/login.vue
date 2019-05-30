@@ -62,7 +62,6 @@
     }),
     methods: {
       login() {
-        this.$router.push("/");
         if (this.$refs.login_form.validate()) {
           this.loading = true;
           this.$auth

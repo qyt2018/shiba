@@ -13,7 +13,7 @@ class ProjectView(view.View):
         result = self.detail_result()
         service = self.service()
         projects = await service.find_all_project()
-        data = result.dump(projects, many=True)
+        data = result.dump(projects, many=True).data
         return self.success(data)
 
     async def post(self, request):

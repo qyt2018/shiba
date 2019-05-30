@@ -54,6 +54,25 @@ export default {
     '@nuxtjs/auth',
     '@nuxtjs/proxy'
   ],
+
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: '/login',
+      home: '/'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {url: '/api/login', method: 'post', propertyName: 'result'},
+          logout: {url: '/api/logout', method: 'post'},
+          user: {url: '/api/user/current', method: 'get', propertyName: 'result'}
+        }
+      }
+    }
+  },
+
   /*
   ** Axios module configuration
   */

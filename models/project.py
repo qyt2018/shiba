@@ -1,5 +1,4 @@
-from sanic_motor import BaseModel
+from utils.model import Model
 
-
-class ProjectModel(BaseModel):
+class ProjectModel(Model):
     __coll__ = "project"

@@ -1,11 +1,12 @@
-from sanic_motor import BaseModel
+from utils.model import Model
 import hashlib
 import uuid
 
 
-class UserModel(BaseModel):
+class UserModel(Model):
     __coll__ = "user"
     __unique_fields__ = ["username"]
+
 
     def create_token(self):
         return uuid.uuid4().hex
