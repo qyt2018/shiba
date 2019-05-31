@@ -63,6 +63,11 @@
 
 <script>
   export default {
+    head() {
+      return {
+        title: "项目"
+      }
+    },
     data() {
       return {
         result: null

@@ -1,10 +1,8 @@
+from sanic.log import logger
 import requests
 import json
-import logging
 import websockets
 import asyncio
-
-logger = logging.getLogger(__name__)
 
 
 def request_error(func):

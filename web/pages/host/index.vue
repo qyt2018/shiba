@@ -15,6 +15,11 @@
 
 <script>
   export default {
+    head() {
+      return {
+        title: "主机"
+      }
+    },
     data() {
       return {
         result: null

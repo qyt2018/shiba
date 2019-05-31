@@ -20,16 +20,24 @@ class UserService(object):
         return str(user.inserted_id)
 
     async def delete_user(self, user_id):
-        pass
+        user = await self.model.find_one(user_id)
+        state = await user.destroy()
+        if state.deleted_count >= 1:
+            return state
+        else:
+            raise Exception()
 
     async def authentication(self, username, password):
         user = await self.model.find_one({"username": username})
-        if user.verify_password(password):
-            token = user.create_token()
-            await self.model.update_one({u'_id': user.id}, {'$set': {"token": token}})
-            return True, token
+        if user:
+            if user.verify_password(password):
+                token = user.create_token()
+                await self.model.update_one({u'_id': user.id}, {'$set': {"token": token}})
+                return True, token
+            else:
+                return False, "密码错误"
         else:
-            return False, None
+            return False, "未找到用户"
 
     async def logout(self, user):
         await self.model.update_one({u'_id': user.id}, {'$set': {"token": None}})

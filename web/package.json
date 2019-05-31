@@ -17,6 +17,7 @@
     "cross-env": "^5.2.0",
     "nuxt": "^2.4.0",
     "vuetify": "^1.5.5",
+    "vuetify-confirm": "^0.2.6",
     "vuetify-loader": "^1.2.1",
     "vuetify-toast-snackbar": "^0.2.4"
   },

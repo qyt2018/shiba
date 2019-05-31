@@ -4,9 +4,7 @@ from forms.user import LoginForm, UserForm
 from results.user import UserDetailResult
 from utils.auth import login_required, admin_required
 from exceptions.model import ModelUniqueException
-import logging
-
-logger = logging.getLogger(__name__)
+from sanic.log import logger
 
 
 class UserLoginView(View):
@@ -20,6 +18,7 @@ class UserLoginView(View):
             is_authenticated, token = await service.authentication(form.username.data, form.password.data)
             if is_authenticated:
                 return self.success(f"{token}")
+            logger.info(token)
             return self.unauthentication("登录失败，请检查账号密码")
         return self.fail(form.errors)
 
@@ -69,6 +68,19 @@ class CreateUserView(View):
                 new_user = await service.create_user(form)
                 return self.success(new_user)
             except ModelUniqueException as e:
-                logging.error(f"ModelUniqueException: 用户名必须唯一,{e}")
+                logger.error(f"ModelUniqueException: 用户名必须唯一,{e}")
                 return self.fail("用户名必须唯一")
         return self.fail(form.errors)
+
+
+class DeleteUserView(View):
+    service = UserService
+    decorators = [admin_required(), login_required("user")]
+
+    async def post(self, request, user_id, user):
+        service = self.service()
+        try:
+            await service.delete_user(user_id)
+            return self.success("成功")
+        except Exception as e:
+            return self.fail("删除出现错误")

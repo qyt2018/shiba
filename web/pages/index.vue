@@ -12,6 +12,11 @@
 
 <script>
   export default {
+    head() {
+      return {
+        title: "主页"
+      }
+    },
     data() {
       return {
         result: null
