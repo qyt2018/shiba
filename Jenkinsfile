@@ -15,7 +15,7 @@ pipeline {
       agent any
       steps {
         echo 'Deploying....'
-        input(message: 'ceshi', submitter: 'ces', submitterParameter: '12')
+        input(message: 'ceshi', submitter: 'ces', submitterParameter: '12', id: '123', ok: 'ces')
       }
     }
   }
