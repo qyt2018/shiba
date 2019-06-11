@@ -14,9 +14,6 @@
       <v-btn flat to="/project">项目
         <v-icon right>adjust</v-icon>
       </v-btn>
-      <v-btn flat v-if="$auth.hasScope('admin')" to="/host">主机
-        <v-icon right>adjust</v-icon>
-      </v-btn>
       <v-btn flat v-if="$auth.hasScope('admin')" to="/user">用户
         <v-icon right>adjust</v-icon>
       </v-btn>

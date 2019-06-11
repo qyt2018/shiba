@@ -4,9 +4,18 @@ import uuid
 
 
 class UserModel(Model):
+    '''
+    schema:
+        id
+        name
+        username
+        password
+        is_admin
+        token
+    '''
+
     __coll__ = "user"
     __unique_fields__ = ["username"]
-
 
     def create_token(self):
         return uuid.uuid4().hex

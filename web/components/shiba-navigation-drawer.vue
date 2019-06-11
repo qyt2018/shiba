@@ -37,7 +37,6 @@
           {icon: "dashboard", name: "主页", id: "12312323", url: `/project/${this.$route.params.key}`},
           {icon: "rowing", name: "发布任务", id: "123123", url: `/project/${this.$route.params.key}/task`},
           {icon: "apps", name: "应用", id: "12321222123", url: `/project/${this.$route.params.key}/app`},
-          {icon: "computer", name: "主机", id: "123123323223", url: `/project/${this.$route.params.key}/host`},
           {icon: "group", name: "成员", id: "12322123", url: `/project/${this.$route.params.key}/user`}
         ],
         project: {
