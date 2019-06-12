@@ -7,7 +7,7 @@
       <span class="font-weight-medium subheading">{{project.name}}</span>
     </v-card-title>
     <v-card-text>
-      {{project.owner}}
+      {{project.key}}
     </v-card-text>
     <v-card-actions>
       <v-list-tile v-if="project.owner" class="grow">

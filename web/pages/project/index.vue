@@ -7,7 +7,7 @@
       <v-btn color="primary" @click="createDialogVisible = true">创建项目</v-btn>
     </v-card-title>
     <v-divider/>
-    <v-layout style="height: 79%">
+    <v-layout style="height: 77%">
       <v-flex xs2>
         <v-list dense>
           <template>
