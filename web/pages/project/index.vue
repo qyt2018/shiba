@@ -46,8 +46,10 @@
                 </v-flex>
               </v-layout>
             </v-flex>
-            <v-flex align-self-center class="pt-2">
-              <v-pagination v-model="currentPage" :length="pageCount"></v-pagination>
+            <v-flex class="pt-2">
+              <div class="text-xs-center">
+                <v-pagination v-model="currentPage" :total-visible="6" :length="pageCount"></v-pagination>
+              </div>
             </v-flex>
           </v-layout>
         </v-container>
@@ -75,7 +77,7 @@
         result: [],
         createDialogVisible: false,
         currentPage: 1,
-        pageCount: 1,
+        pageCount: 0,
         search: ""
       }
     },
@@ -96,7 +98,7 @@
         this.$axios.get("/api/project/", {
           params: {
             page: this.currentPage,
-            per_page: 12,
+            per_page: 8,
             search: this.search
           }
         }).then(({data}) => {

@@ -57,6 +57,7 @@
     methods: {
       close() {
         this.$refs.form.reset();
+        this.userList = [];
         this.$emit('close');
       },
       queryUserList(val) {
