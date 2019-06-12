@@ -6,6 +6,11 @@ class ProjectModel(Model):
     schema:
         id
         name
+        icon: {
+          name
+          color
+        }
+        key
         owner
         jira_project
         external_links: {
@@ -18,3 +23,4 @@ class ProjectModel(Model):
         }
     '''
     __coll__ = "project"
+    __unique_fields__ = ['key']

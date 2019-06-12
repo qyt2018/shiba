@@ -5,6 +5,12 @@ from forms.user import UserForm
 class UserService(object):
     model = UserModel
 
+    async def user_exsit_by_id(self, id):
+        user = await self.model.find_one(id)
+        if user:
+            return True
+        return False
+
     async def find_users(self, filter):
         users = await self.model.find(filter)
         return users.objects

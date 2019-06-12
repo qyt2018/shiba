@@ -1,7 +1,7 @@
 <template>
   <v-card height="100%">
     <!--创建用户-->
-    <v-dialog max-width="500px" v-model="createUserDialogVisible">
+    <v-dialog max-width="500px" persistent v-model="createUserDialogVisible">
       <v-card>
         <v-card-title class="title">
           添加用户

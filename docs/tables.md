@@ -11,6 +11,11 @@ token
 ``` yaml
 id
 name
+key
+icon: {
+  name
+  color
+}
 owner
 jira_project
 external_links: {
@@ -47,3 +52,4 @@ jira_version
 create_user
 create_time
 ```
+###

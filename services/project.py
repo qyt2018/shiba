@@ -4,10 +4,10 @@ from models.project import ProjectModel
 class ProjectService(object):
     model = ProjectModel
 
-    async def find_all_project(self):
+    async def find_all_project(self, request, filter):
         model = self.model()
-        projects = await model.find()
-        return projects.objects
+        page_objects = await model.page_find(request, filter=filter)
+        return page_objects
 
     async def create_project(self, data):
         model = self.model()
