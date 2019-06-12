@@ -1,5 +1,5 @@
 <template>
-  <v-card :to="`/project/${project.key}`" >
+  <v-card :to="`/project/${project.key}`" height="230px">
     <v-card-title primary-title>
       <v-icon left>
         help_outline
