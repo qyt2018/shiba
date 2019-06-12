@@ -1,4 +1,4 @@
-from sanic_motor import BaseModel
+from sanic_motor import BaseModel, get_sort
 from exceptions.model import ModelUniqueException
 import math
 

@@ -1,7 +1,6 @@
 from utils.view import View
 from services.user import UserService
 from forms.user import LoginForm, UserForm
-from results.user import UserDetailResult
 from utils.auth import login_required, admin_required
 from exceptions.model import ModelUniqueException
 from sanic.log import logger
@@ -34,30 +33,34 @@ class UserLogoutView(View):
 
 
 class CurrentUserView(View):
-    result = UserDetailResult
     decorators = [login_required("user")]
 
     async def get(self, request, user):
-        result = self.result()
-        return self.success(result.dump(user).data)
+        result = {
+            "id": str(user.id),
+            "name": user.name,
+            "username": user.username,
+            "is_admin": user.is_admin,
+            "scope": ["user"]
+        }
+        if user.is_admin:
+            result['scope'].append("admin")
+        return self.success(result)
 
 
 class UserListView(View):
     service = UserService
-    result = UserDetailResult
     decorators = [admin_required(), login_required("user")]
 
     async def get(self, request, user):
         service = self.service()
-        result = self.result()
-        users = await service.find_users({})
-        return self.success(result.dump(users, many=True).data)
+        result = await service.find_users({})
+        return self.success(result)
 
 
 class CreateUserView(View):
     service = UserService
     form = UserForm
-    result = UserDetailResult
     decorators = [admin_required(), login_required("user")]
 
     async def post(self, request, user):

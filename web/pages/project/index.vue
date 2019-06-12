@@ -1,12 +1,13 @@
 <template>
   <v-card height="100%">
+    <project-create-dialog :visible.sync="createDialogVisible" @close="closeDialog"/>
     <v-card-title style="height: 12%">
       <span class="headline font-weight-black">项目列表</span>
       <v-spacer/>
-      <v-btn color="primary">创建项目</v-btn>
+      <v-btn color="primary" @click="createDialogVisible = true">创建项目</v-btn>
     </v-card-title>
     <v-divider/>
-    <v-layout style="height: 87%">
+    <v-layout style="height: 79%">
       <v-flex xs2>
         <v-list dense>
           <template>
@@ -33,26 +34,20 @@
       </v-flex>
       <v-divider :vertical="true"/>
       <v-flex xs10>
+        <div class="ml-5 mt-3" style="max-width: 20%">
+          <v-text-field prepend-icon="search" v-model="search" label="搜索......"></v-text-field>
+        </div>
         <v-container fill-height>
           <v-layout column fill-height>
             <v-flex>
               <v-layout wrap>
-                <v-flex v-for="x in 12" :key="x" class="pa-1" xs3>
-                  <v-card to="/project/ceshi" min-height="150px" max-height="150px">
-                    <v-card-title primary-title>
-                      <v-icon left>
-                        help_outline
-                      </v-icon>
-                      <span class="font-weight-medium subheading">项目名称</span>
-                    </v-card-title>
-                    <v-card-text>
-                    </v-card-text>
-                  </v-card>
+                <v-flex v-for="project in result" :key="project.id" class="pa-1" xs3>
+                  <project-info-card :project="project"/>
                 </v-flex>
               </v-layout>
             </v-flex>
             <v-flex align-self-center class="pt-2">
-              <v-pagination :value="1" :length="6"></v-pagination>
+              <v-pagination v-model="currentPage" :length="pageCount"></v-pagination>
             </v-flex>
           </v-layout>
         </v-container>
@@ -62,7 +57,14 @@
 </template>
 
 <script>
+  import ProjectCreateDialog from '@/components/project/create-dialog'
+  import ProjectInfoCard from '@/components/project/info-card'
+
   export default {
+    components: {
+      ProjectCreateDialog,
+      ProjectInfoCard
+    },
     head() {
       return {
         title: "项目"
@@ -70,13 +72,42 @@
     },
     data() {
       return {
-        result: null
+        result: [],
+        createDialogVisible: false,
+        currentPage: 1,
+        pageCount: 1,
+        search: ""
       }
     },
+    watch: {
+      currentPage() {
+        this.queryList();
+      },
+      search: _.debounce(function () {
+        this.currentPage = 1;
+        this.queryList()
+      }, 300)
+    },
     mounted() {
-      this.$axios.get("/api/project/").then(({data}) => {
-        this.result = data;
-      })
+      this.queryList();
+    },
+    methods: {
+      queryList() {
+        this.$axios.get("/api/project/", {
+          params: {
+            page: this.currentPage,
+            per_page: 12,
+            search: this.search
+          }
+        }).then(({data}) => {
+          this.result = data.result.objects;
+          this.pageCount = data.result.page_count;
+        })
+      },
+      closeDialog() {
+        this.createDialogVisible = false;
+        this.queryList();
+      }
     }
   }
 </script>

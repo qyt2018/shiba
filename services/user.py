@@ -5,15 +5,27 @@ from forms.user import UserForm
 class UserService(object):
     model = UserModel
 
-    async def user_exsit_by_id(self, id):
+    def get_user_result(self, user):
+        result = {
+            "id": str(user.id),
+            "name": user.name,
+            "username": user.username,
+            "is_admin": user.is_admin,
+            "scope": ["user"]
+        }
+        if user.is_admin:
+            result['scope'].append("admin")
+        return result
+
+    async def user_by_id(self, id):
         user = await self.model.find_one(id)
         if user:
-            return True
+            return user
         return False
 
     async def find_users(self, filter):
         users = await self.model.find(filter)
-        return users.objects
+        return map(self.get_user_result, users.objects)
 
     async def create_user(self, user_form: UserForm):
         user_data = {

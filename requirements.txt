@@ -1,5 +1,4 @@
 sanic
-marshmallow
 sanic-motor
 WTForms
 requests

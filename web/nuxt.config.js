@@ -1,5 +1,6 @@
 import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 import pkg from './package'
+import webpack from 'webpack';
 
 export default {
   mode: 'spa',
@@ -93,7 +94,7 @@ export default {
   */
   build: {
     transpile: ['vuetify/lib'],
-    plugins: [new VuetifyLoaderPlugin()],
+    plugins: [new VuetifyLoaderPlugin(), new webpack.ProvidePlugin({'_': 'lodash'})],
     loaders: {
       stylus: {
         import: ['~assets/style/variables.styl']
