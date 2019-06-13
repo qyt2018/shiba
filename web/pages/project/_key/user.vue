@@ -5,6 +5,11 @@
 <script>
   export default {
     layout: "project",
+    head() {
+      return {
+        title: "项目成员"
+      }
+    },
     data() {
       return {
         projectKey: this.$route.params.key

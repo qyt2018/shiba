@@ -20,7 +20,7 @@
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
-    <shiba-navigation-drawer-links/>
+    <shiba-navigation-drawer-links :projectLinks="project.links"/>
   </v-navigation-drawer>
 </template>
 
@@ -31,6 +31,11 @@
     components: {
       ShibaNavigationDrawerLinks
     },
+    props: {
+      project: {
+        type: Object
+      }
+    },
     data() {
       return {
         menus: [
@@ -38,10 +43,7 @@
           {icon: "rowing", name: "发布任务", id: "123123", url: `/project/${this.$route.params.key}/task`},
           {icon: "apps", name: "应用", id: "12321222123", url: `/project/${this.$route.params.key}/app`},
           {icon: "group", name: "成员", id: "12322123", url: `/project/${this.$route.params.key}/user`}
-        ],
-        project: {
-          name: "EV流程管理系统"
-        }
+        ]
       }
     }
   }

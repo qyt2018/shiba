@@ -52,7 +52,7 @@
               <span>6</span>
             </template>
             <v-btn :to="`/project/${project.key}/app`" small outline>
-              应用
+              未开始
             </v-btn>
           </v-badge>
         </v-flex>
@@ -66,7 +66,7 @@
               <span>6</span>
             </template>
             <v-btn :to="`/project/${project.key}/task`" small outline>
-              任务
+              进行中
             </v-btn>
           </v-badge>
         </v-flex>
@@ -80,7 +80,7 @@
               <span>6</span>
             </template>
             <v-btn :to="`/project/${project.key}/user`" small outline>
-              成员
+              堵塞
             </v-btn>
           </v-badge>
         </v-flex>

@@ -4,6 +4,11 @@
 
 <script>
   export default {
-    layout: "project"
+    layout: "project",
+    head() {
+      return {
+        title: "项目主页"
+      }
+    },
   }
 </script>

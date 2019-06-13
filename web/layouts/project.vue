@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <shiba-navigation-drawer/>
+    <shiba-navigation-drawer :project="project"/>
     <shiba-toolbar/>
     <v-content>
-        <nuxt/>
+      <nuxt/>
     </v-content>
   </v-app>
 </template>
@@ -23,7 +23,19 @@
       }
     },
     data() {
-      return {}
+      return {
+        project: {}
+      }
+    },
+    mounted() {
+      this.queryProject(this.$route.params.key);
+    },
+    methods: {
+      queryProject(key) {
+        this.$axios.get(`/api/project/${key}/`).then(({data}) => {
+          this.project = data.result;
+        })
+      },
     }
   }
 </script>

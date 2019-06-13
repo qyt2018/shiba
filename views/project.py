@@ -1,10 +1,11 @@
 from utils import view
 from services.user import UserService
 from services.project import ProjectService
-from forms.project import ProjectDetailForm
+from forms.project import ProjectDetailForm, ProjectLinkForm
 from sanic.log import logger
 from exceptions.model import ModelUniqueException
 from utils.auth import login_required
+import uuid
 
 
 class ProjectListView(view.View):
@@ -29,9 +30,9 @@ class ProjectDetailView(view.View):
     service = ProjectService
     decorators = [login_required("user")]
 
-    async def get(self, request, user, id):
+    async def get(self, request, user, pk):
         service = self.service()
-        state, result = await service.get_project(id)
+        state, result = await service.get_project(pk)
         if state:
             return self.success(result)
         return self.fail(result)
@@ -92,3 +93,35 @@ class ProjectUpdateView(view.View):
                 logger.error(f"ModelUniqueException: 关键词必须唯一,{e}")
                 return self.fail("关键词必须唯一")
         return self.fail(form.errors)
+
+
+class ProjectAddLinkView(view.View):
+    service = ProjectService
+    form = ProjectLinkForm
+
+    async def post(self, request, id):
+        form = self.form(data=request.json)
+        if form.validate():
+            service = self.service()
+            data = form.data
+            data['id'] = str(uuid.uuid4())
+            state, result = await service.project_add_link(id, data)
+            if state:
+                return self.success(result.get('links', []))
+            return self.fail(result)
+        return self.fail(form.errors)
+
+
+class ProjectDeleteLinkView(view.View):
+    service = ProjectService
+    form = ProjectLinkForm
+
+    async def post(self, request, id):
+        link_id = request.json.get('link_id')
+        if link_id:
+            service = self.service()
+            state, result = await service.project_delete_link(id, link_id)
+            if state:
+                return self.success(result.get('links', []))
+            return self.fail(result)
+        return self.fail("未找到URL")

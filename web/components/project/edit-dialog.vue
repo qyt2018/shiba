@@ -77,8 +77,11 @@
       },
       queryProject() {
         this.$axios.get(`/api/project/${this.projectId}/`).then(({data}) => {
-          this.form = data.result;
-          this.form.owner = data.result.owner.id;
+          this.form = {
+            owner: data.result.owner.id,
+            name: data.result.name,
+            key: data.result.key
+          };
         })
       },
       save() {

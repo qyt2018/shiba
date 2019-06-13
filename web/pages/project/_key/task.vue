@@ -5,6 +5,11 @@
 <script>
   export default {
     layout: "project",
+    head() {
+      return {
+        title: "发布任务"
+      }
+    },
     data() {
       return {
         projectKey: this.$route.params.key
