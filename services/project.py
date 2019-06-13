@@ -31,3 +31,10 @@ class ProjectService(object):
         model = self.model()
         data = await model.insert_one(data)
         return str(data.inserted_id)
+
+    async def delete_project(self, id):
+        project = await self.model.find_one(id)
+        if project:
+            await self.model.update_one({u'_id': project.id}, {'$set': {"delete": True}})
+            return True, "删除成功"
+        return False, "未找到用户"

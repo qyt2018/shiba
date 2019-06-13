@@ -1,4 +1,4 @@
-from .project import ProjectListView, ProjectCreateView
+from .project import ProjectListView, ProjectCreateView, ProjectDeleteView
 from .user import UserLoginView, UserListView, CreateUserView, CurrentUserView, UserLogoutView, DeleteUserView
 from .index import IndexView
 
@@ -10,6 +10,7 @@ urlpatterns = [
     ('/api/login/', UserLoginView.as_view()),
     ('/api/logout/', UserLogoutView.as_view()),
     ('/api/project/create', ProjectCreateView.as_view()),
+    ('/api/project/<id>/delete/', ProjectDeleteView.as_view()),
     ('/api/project/', ProjectListView.as_view()),
     ('/<path:path>', IndexView.as_view()),
     ('/', IndexView.as_view())

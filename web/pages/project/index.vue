@@ -13,20 +13,20 @@
           <template>
             <v-subheader>筛选</v-subheader>
             <v-divider/>
-            <v-list-tile avatar @click="">
+            <v-list-tile :class="!me ? 'primary--text': ''" avatar @click="me=false">
               <v-list-tile-avatar>
-                <v-icon color="primary">assignment</v-icon>
+                <v-icon :color="!me ? 'primary': ''">assignment</v-icon>
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>所有项目</v-list-tile-title>
+                <v-list-tile-title class="font-weight-medium">所有项目</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile avatar @click="">
+            <v-list-tile :class="me ? 'primary--text': ''" avatar @click="me=true">
               <v-list-tile-avatar>
-                <v-icon color="yellow darken-2">assignment_ind</v-icon>
+                <v-icon :color="me ? 'yellow darken-4': ''">assignment_ind</v-icon>
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>我的项目</v-list-tile-title>
+                <v-list-tile-title class="font-weight-medium">我的项目</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </template>
@@ -42,7 +42,7 @@
             <v-flex>
               <v-layout wrap>
                 <v-flex v-for="project in result" :key="project.id" class="pa-1" xs3>
-                  <project-info-card :project="project"/>
+                  <project-info-card @success="closeDialog" :project="project"/>
                 </v-flex>
               </v-layout>
             </v-flex>
@@ -78,10 +78,15 @@
         createDialogVisible: false,
         currentPage: 1,
         pageCount: 0,
-        search: ""
+        search: "",
+        me: false
       }
     },
     watch: {
+      me() {
+        this.currentPage = 1;
+        this.queryList();
+      },
       currentPage() {
         this.queryList();
       },
@@ -99,7 +104,8 @@
           params: {
             page: this.currentPage,
             per_page: 8,
-            search: this.search
+            search: this.search,
+            me: this.me
           }
         }).then(({data}) => {
           this.result = data.result.objects;

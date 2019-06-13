@@ -4,16 +4,24 @@ from services.project import ProjectService
 from forms.project import ProjectDetailForm
 from sanic.log import logger
 from exceptions.model import ModelUniqueException
+from utils.auth import login_required
 
 
 class ProjectListView(view.View):
     service = ProjectService
     search_fields = ('name', 'key')
+    decorators = [login_required("user")]
 
-    async def get(self, request):
+    async def get(self, request, user):
         service = self.service()
+        # 筛选条件
+        filter = {"$or": [{'delete': False}, {'delete': None}]}
         search_filters = self.get_serach(request)
-        result = await service.find_all_project(request, filter=search_filters)
+        if request.raw_args.get('me') == "true":
+            filter['owner'] = str(user.id)
+        filter.update(search_filters)
+
+        result = await service.find_all_project(request, filter=filter)
         return self.success(result)
 
 
@@ -37,3 +45,14 @@ class ProjectCreateView(view.View):
                 logger.error(f"ModelUniqueException: 关键词必须唯一,{e}")
                 return self.fail("关键词必须唯一")
         return self.fail(form.errors)
+
+
+class ProjectDeleteView(view.View):
+    service = ProjectService
+
+    async def post(self, request, id):
+        service = self.service()
+        state, result = await service.delete_project(id)
+        if state:
+            return self.success(result)
+        return self.fail(result)
