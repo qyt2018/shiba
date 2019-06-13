@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="visible" persistent max-width="500">
     <v-card>
-      <v-card-title class="title">创建项目</v-card-title>
+      <v-card-title class="title">编辑项目</v-card-title>
       <v-card-text>
         <v-container>
           <v-form ref="form" lazy-validation>
@@ -24,7 +24,7 @@
 
 <script>
   export default {
-    name: "ProjectCreateDialog",
+    name: "ProjectEditDialog",
     data() {
       return {
         form: {},
@@ -49,7 +49,8 @@
       },
       visible(val) {
         if (val) {
-          this.queryUserList(val)
+          this.queryUserList(val);
+          this.queryProject(val)
         }
       }
     },
@@ -57,6 +58,9 @@
       visible: {
         type: Boolean,
         default: false
+      },
+      projectId: {
+        type: String
       }
     },
     methods: {
@@ -71,10 +75,16 @@
           this.userList = data.result;
         })
       },
+      queryProject() {
+        this.$axios.get(`/api/project/${this.projectId}/`).then(({data}) => {
+          this.form = data.result;
+          this.form.owner = data.result.owner.id;
+        })
+      },
       save() {
         if (this.$refs.form.validate()) {
-          this.$axios.post("/api/project/create", this.form).then(({data}) => {
-            this.$toast.success(`创建成功：${data.result}`);
+          this.$axios.post(`/api/project/${this.projectId}/update`, this.form).then(({data}) => {
+            this.$toast.success(`修改成功`);
             this.close();
           })
         }

@@ -1,5 +1,6 @@
 <template>
   <v-card height="230px">
+    <project-edit-dialog @close="closeEditProjectDialog" :projectId="currentProjectId" :visible="editDialogVisible"/>
     <v-card-title primary-title>
       <nuxt-link style="text-decoration: none; color: #000;" class="ml-2" :to="`/project/${project.key}`">
         <span class="font-weight-medium subheading">{{project.name}}</span>
@@ -16,7 +17,7 @@
         </template>
         <v-list dense>
           <v-list-tile
-            @click=""
+            @click="editProject(project.id)"
           >
             <v-list-tile-action>
               <v-icon>edit</v-icon>
@@ -103,14 +104,34 @@
 </template>
 
 <script>
+  import ProjectEditDialog from '@/components/project/edit-dialog'
+
   export default {
+    components: {
+      ProjectEditDialog
+    },
     name: "ProjectInfoCard",
+    data() {
+      return {
+        currentProjectId: null,
+        editDialogVisible: false
+      }
+    },
     props: {
       project: {
         type: Object
       }
     },
     methods: {
+      closeEditProjectDialog() {
+        this.currentProjectId = null;
+        this.editDialogVisible = false;
+        this.$emit('success');
+      },
+      editProject(id) {
+        this.currentProjectId = id;
+        this.editDialogVisible = true;
+      },
       deleteProject(id) {
         this.$confirm('确定删除吗？').then(res => {
           if (res) {

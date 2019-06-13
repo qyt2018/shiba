@@ -14,9 +14,12 @@ class Model(BaseModel):
         raise ModelUniqueException()
 
     @classmethod
-    async def insert_many(cls, *args, **kwargs):
+    async def update_one(cls, *args, **kwargs):
         db = kwargs.pop('db', None)
-        return await cls.get_collection(db).insert_many(*args, **kwargs)
+        is_uniq = await cls.is_unique(id=args[0].get('_id'), doc=args[1].get('$set'))
+        if is_uniq in (True, None):
+            return await cls.get_collection(db).update_one(*args, **kwargs)
+        raise ModelUniqueException()
 
     @classmethod
     async def page_find(cls, request=None, *args, **kwargs):

@@ -18,6 +18,12 @@ class ProjectService(object):
             result['owner'] = user_service.get_user_result(owner)
         return result
 
+    async def get_project(self, id):
+        project = await self.model.find_one(id)
+        if project:
+            return True, await self.get_project_result(project)
+        return False, "未找到项目"
+
     async def find_all_project(self, request, filter):
         model = self.model()
         objects = []
@@ -37,4 +43,11 @@ class ProjectService(object):
         if project:
             await self.model.update_one({u'_id': project.id}, {'$set': {"delete": True}})
             return True, "删除成功"
-        return False, "未找到用户"
+        return False, "未找到项目"
+
+    async def update_project(self, id, data):
+        project = await self.model.find_one(id)
+        if project:
+            await self.model.update_one({u'_id': project.id}, {'$set': data})
+            return True, "更新成功"
+        return False, "未找到项目"
