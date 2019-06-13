@@ -16,12 +16,11 @@ class ProjectListView(view.View):
     async def get(self, request, user):
         service = self.service()
         # 筛选条件
-        filter = {"$or": [{'delete': False}, {'delete': None}]}
         search_filters = self.get_serach(request)
+        filter = {"$or": [{'delete': False}, {'delete': None}]}
         if request.raw_args.get('me') == "true":
             filter['owner'] = str(user.id)
-        filter.update(search_filters)
-
+        filter = {'$and': [filter, search_filters]}
         result = await service.find_all_project(request, filter=filter)
         return self.success(result)
 
