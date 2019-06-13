@@ -66,9 +66,10 @@
         this.$emit('close');
       },
       queryUserList(val) {
-        this.userSearchLoading = false;
+        this.userSearchLoading = true;
         this.$axios.get("/api/user/").then(({data}) => {
           this.userList = data.result;
+          this.userSearchLoading = false;
         })
       },
       save() {
