@@ -29,6 +29,7 @@ http://127.0.0.1:3000
 ![avatar](./docs/images/login.png)
 ![avatar](./docs/images/index.png)
 ![avatar](./docs/images/project_list.png)
-![avatar](./docs/images/project_detail.png)
+![avatar](./docs/images/project_index.png)
+![avatar](./docs/images/project_user.png)
 
 ```感兴趣或有需求的朋友可以一起参与，WeChat：18516696557```
