@@ -1,7 +1,9 @@
 <template>
   <v-card height="100%">
-    <v-card-title>
+    <v-card-title  style="height: 12%">
       <span class="title font-weight-black">发布任务</span>
+      <v-spacer/>
+      <v-btn color="primary">创建任务</v-btn>
     </v-card-title>
     <v-divider/>
     <v-card-text>
