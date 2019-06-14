@@ -1,5 +1,8 @@
 from models.project import ProjectModel
 from services.user import UserService
+from enums.project import ProjectRoleEnums
+from bson import ObjectId
+import uuid
 
 
 class ProjectService(object):
@@ -22,12 +25,39 @@ class ProjectService(object):
                 result['links'].append({'name': link['name'], 'url': link['url'], 'id': str(link['id'])})
         return result
 
+    async def get_project_user_result(self, project):
+        result = []
+        user_service = UserService()
+        owner = await user_service.user_by_id(project.owner)
+        owner_result = {
+            'id': str(uuid.uuid4()),
+            'role_key': ProjectRoleEnums.OWNER.name,
+            'role_name': ProjectRoleEnums.OWNER.value,
+            'user': project.owner,
+            'user_detail': user_service.get_user_result(owner)
+        }
+        result.append(owner_result)
+        if project.users:
+            for user in project.users:
+                user_obj = await user_service.user_by_id(user['user'])
+                user['user_detail'] = user_service.get_user_result(user_obj)
+                result.append(user)
+        return result
+
     async def get_project(self, pk):
         project = await self.model.find_one(pk)
         if not project:
             project = await self.model.find_one({'key': pk})
         if project:
             return True, await self.get_project_result(project)
+        return False, "未找到项目"
+
+    async def get_project_user(self, pk):
+        project = await self.model.find_one(pk)
+        if not project:
+            project = await self.model.find_one({'key': pk})
+        if project:
+            return True, await self.get_project_user_result(project)
         return False, "未找到项目"
 
     async def find_all_project(self, request, filter):
@@ -77,3 +107,31 @@ class ProjectService(object):
             project = await self.get_project(id)
             return True, project[1]
         return False, "未找到项目"
+
+    async def project_add_user(self, id, data):
+        project = await self.model.find_one(id)
+        if not project:
+            project = await self.model.find_one({'key': id})
+        if project:
+            data['role_name'] = ProjectRoleEnums[data['role_key']].value
+            await self.model.update_one({u'_id': project.id}, {'$push': {"users": data}})
+            project = await self.get_project_user(id)
+            return True, project[1]
+        return False, "未找到项目"
+
+    async def project_delete_user(self, id, row_id):
+        project = await self.model.find_one(id)
+        if not project:
+            project = await self.model.find_one({'key': id})
+        if project:
+            await self.model.update_one({u'_id': project.id}, {'$pull': {"users": {'id': row_id}}})
+            project = await self.get_project_user(id)
+            return True, project[1]
+        return False, "未找到项目"
+
+    async def project_has_user(self, key, user):
+        if await self.model.find_one({'key': key, "users": {'$elemMatch': {'user': user}}}):
+            return True
+        if await self.model.find_one({'key': key, "owner": user}):
+            return True
+        return False

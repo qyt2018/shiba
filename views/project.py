@@ -1,7 +1,7 @@
 from utils import view
 from services.user import UserService
 from services.project import ProjectService
-from forms.project import ProjectDetailForm, ProjectLinkForm
+from forms.project import ProjectDetailForm, ProjectLinkForm, ProjectUserForm
 from sanic.log import logger
 from exceptions.model import ModelUniqueException
 from utils.auth import login_required
@@ -113,7 +113,6 @@ class ProjectAddLinkView(view.View):
 
 class ProjectDeleteLinkView(view.View):
     service = ProjectService
-    form = ProjectLinkForm
 
     async def post(self, request, id):
         link_id = request.json.get('link_id')
@@ -124,3 +123,48 @@ class ProjectDeleteLinkView(view.View):
                 return self.success(result.get('links', []))
             return self.fail(result)
         return self.fail("未找到URL")
+
+
+class ProjectAddUserView(view.View):
+    service = ProjectService
+    form = ProjectUserForm
+
+    async def post(self, request, id):
+        form = self.form(data=request.json)
+        if form.validate():
+            service = self.service()
+            data = form.data
+            data['id'] = str(uuid.uuid4())
+            has_user = await service.project_has_user(id, form.user.data)
+            result = "项目成员已存在"
+            if not has_user:
+                state, result = await service.project_add_user(id, data)
+                if state:
+                    return self.success(result)
+            return self.fail(result)
+        return self.fail(form.errors)
+
+
+class ProjectdeleteUserView(view.View):
+    service = ProjectService
+
+    async def post(self, request, id):
+        service = self.service()
+        row_id = request.json.get('row_id')
+        result = "未找到ID"
+        if row_id:
+            state, result = await service.project_delete_user(id, row_id)
+            if state:
+                return self.success(result)
+        return self.fail(result)
+
+
+class ProjectUserView(view.View):
+    service = ProjectService
+
+    async def get(self, request, id):
+        service = self.service()
+        state, result = await service.get_project_user(id)
+        if state:
+            return self.success(result)
+        return self.fail(result)

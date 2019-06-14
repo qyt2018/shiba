@@ -78,7 +78,7 @@
         if (this.$refs.form.validate()) {
           this.$axios.post(`/api/project/${this.projectKey}/add_link`, this.form).then(({data}) => {
             this.links = data.result;
-            this.$toast.success(`修改成功`);
+            this.$toast.success(`添加成功`);
             this.$refs.form.reset();
             this.addLinkFormVisible = false;
           })
