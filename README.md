@@ -27,7 +27,6 @@ http://127.0.0.1:3000
 
 ### 未完成功能截图：
 ![avatar](./docs/images/login.png)
-![avatar](./docs/images/index.png)
 ![avatar](./docs/images/project_list.png)
 ![avatar](./docs/images/project_index.png)
 ![avatar](./docs/images/project_user.png)
