@@ -5,7 +5,7 @@
     </v-card-title>
     <v-divider/>
     <v-card-text>
-      <v-data-table>
+      <v-data-table :items="[]">
       </v-data-table>
     </v-card-text>
   </v-card>
